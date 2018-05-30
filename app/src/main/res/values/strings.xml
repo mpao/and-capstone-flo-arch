@@ -3,4 +3,5 @@
     <string name="title_home">Home</string>
     <string name="title_map">Map</string>
     <string name="title_favorites">Favorites</string>
+    <string name="network_error">network error :|</string>
 </resources>
