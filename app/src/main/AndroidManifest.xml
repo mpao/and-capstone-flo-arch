@@ -27,6 +27,12 @@
             android:exported="false">
         </service>
 
+        <provider
+            android:name=".models.databases.AppContentProvider"
+            android:authorities="io.github.mpao.florencearchitectures"
+            android:exported="false">
+        </provider>
+
     </application>
 
 </manifest>
