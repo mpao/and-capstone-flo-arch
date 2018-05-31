@@ -3,10 +3,7 @@ package io.github.mpao.florencearchitectures.models.networks;
 import android.app.IntentService;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
 import android.util.Log;
-import java.util.ArrayList;
-import java.util.List;
 import javax.inject.Inject;
 import io.github.mpao.florencearchitectures.di.App;
 import io.github.mpao.florencearchitectures.entities.Building;
@@ -36,31 +33,6 @@ public class OpenDataService extends IntentService {
                 if(list != null && list.length > 0) {
                     OpenDataService.this.deleteAll();
                     OpenDataService.this.insertAll(list);
-
-                    // todo: example db data
-                    List<Building> test = new ArrayList<>();
-                    Cursor cursor = getContentResolver().query(
-                            AppContract.AppContractElement.CONTENT_URI,
-                            null,
-                            null,
-                            null,
-                            null
-                    );
-                    if(cursor != null) {
-                        while (cursor.moveToNext()){
-                            String id   = cursor.getString(cursor.getColumnIndex(AppContract.AppContractElement.ID));
-                            String name = cursor.getString(cursor.getColumnIndex(AppContract.AppContractElement.NAME));
-                            Building building = new Building(cursor);
-                            test.add(building);
-                            Log.d("FROM DB", id+" "+name);
-                        }
-                        cursor.close();
-                    }
-
-                    for (Building element: test) {
-                        Log.d("TEST", element.toString());
-                    }
-
                 }
 
             }
