@@ -10,6 +10,11 @@ Capstone project for udacity android nanodegree, based on Opendata by [opendata.
 
 ### Constraints
 
+>*Update 31.5.2018* Room is allowed, right after 
+>I've implemented content provider at [f9c7e93](https://github.com/mpao/and-capstone-flo-arch/commit/f9c7e936850a96f6eaac39927aa438ff57a02cf6) 
+>and [77faf80](https://github.com/mpao/and-capstone-flo-arch/commit/77faf80958699ebe645a4b90160c8e550ce47f99)
+>![fuu](docs/fuuuu.jpg)
+
 1.  App is written solely in the **Java** Programming Language
 2.  App utilizes **stable release versions** of all libraries, Gradle, and Android Studio.
 3.  App includes support for **accessibility**, **RTL**, and other languages
