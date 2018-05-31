@@ -14,6 +14,7 @@ import io.github.mpao.florencearchitectures.R;
 import static io.github.mpao.florencearchitectures.models.databases.AppContract.AppContractElement.CATEGORY;
 import static io.github.mpao.florencearchitectures.models.databases.AppContract.AppContractElement.CONTENT_URI;
 import static io.github.mpao.florencearchitectures.models.databases.AppContract.AppContractElement.BUILDINGS_TABLE;
+import static io.github.mpao.florencearchitectures.models.databases.AppContract.AppContractElement.MAIN_IMAGE;
 
 public class AppContentProvider extends ContentProvider {
 
@@ -95,15 +96,7 @@ public class AppContentProvider extends ContentProvider {
                         sortOrder);
                 break;
             case CATEGORIES:
-                cursor = db.query(
-                        BUILDINGS_TABLE,
-                        new String[] {CATEGORY,"count(*) AS count"},
-                        selection,
-                        selectionArgs,
-                        CATEGORY,
-                        null,
-                        CATEGORY
-                );
+                cursor = getCategories(db);
                 break;
             default:
                 throw new UnsupportedOperationException(context.getString(R.string.network_error));
@@ -150,4 +143,20 @@ public class AppContentProvider extends ContentProvider {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+    //region Helper Methods
+    private Cursor getCategories(SQLiteDatabase db){
+
+        //sqlite, as mysql, enables multi-selection with a single group by <3
+        return db.query(
+                BUILDINGS_TABLE,
+                new String[] {CATEGORY, MAIN_IMAGE, "count(*) AS count"},
+                null,
+                null,
+                CATEGORY,
+                null,
+                CATEGORY
+        );
+
+    }
+    //endregion
 }
