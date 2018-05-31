@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import io.github.mpao.florencearchitectures.R;
+import static io.github.mpao.florencearchitectures.models.databases.AppContract.AppContractElement.CATEGORY;
 import static io.github.mpao.florencearchitectures.models.databases.AppContract.AppContractElement.CONTENT_URI;
 import static io.github.mpao.florencearchitectures.models.databases.AppContract.AppContractElement.BUILDINGS_TABLE;
 
@@ -19,14 +20,16 @@ public class AppContentProvider extends ContentProvider {
     DbHelper dbHelper;
     Context context;
     // use always the conventional mode: 100,200... for directories, and 101,102... for items in that direcotry
-    public static final int BUILDINGS = 100;
-    public static final int ELEMENT   = 101;
+    public static final int BUILDINGS  = 100;
+    public static final int ELEMENT    = 101;
+    public static final int CATEGORIES = 200;
     public static final UriMatcher URI_MATCHER = buildUriMatcher();
     public static UriMatcher buildUriMatcher(){
 
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(AppContract.AUTHORITY, AppContract.PATH, BUILDINGS);
-        uriMatcher.addURI(AppContract.AUTHORITY, AppContract.PATH + "/#", ELEMENT);
+        uriMatcher.addURI(AppContract.AUTHORITY, AppContract.ALL_BUILDINGS, BUILDINGS);
+        uriMatcher.addURI(AppContract.AUTHORITY, AppContract.CATEGORIES, CATEGORIES);
+        uriMatcher.addURI(AppContract.AUTHORITY, AppContract.ALL_BUILDINGS + "/#", ELEMENT);
         return uriMatcher;
 
     }
@@ -90,6 +93,18 @@ public class AppContentProvider extends ContentProvider {
                         null,
                         "id="+uri.getPathSegments().get(1),
                         sortOrder);
+                break;
+            case CATEGORIES:
+                cursor = db.query(
+                        BUILDINGS_TABLE,
+                        new String[] {CATEGORY,"count(*) AS count"},
+                        selection,
+                        selectionArgs,
+                        CATEGORY,
+                        null,
+                        CATEGORY
+                );
+                break;
             default:
                 throw new UnsupportedOperationException(context.getString(R.string.network_error));
         }

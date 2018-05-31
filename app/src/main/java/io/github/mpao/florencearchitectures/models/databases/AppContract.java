@@ -9,7 +9,8 @@ public class AppContract {
      */
     public static final String AUTHORITY     = "io.github.mpao.florencearchitectures";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
-    public static final String PATH          = "buildings";
+    public static final String ALL_BUILDINGS = "buildings";
+    public static final String CATEGORIES    = "categories";
 
     private AppContract(){}
 
@@ -20,7 +21,8 @@ public class AppContract {
 
         // define the content uri for the table
         // for a single element, append che # to identify the building's ID
-        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH).build();
+        public static final Uri CONTENT_URI  = BASE_CONTENT_URI.buildUpon().appendPath(ALL_BUILDINGS).build();
+        public static final Uri CATEGORY_URI = BASE_CONTENT_URI.buildUpon().appendPath(CATEGORIES).build();
 
         public static final String BUILDINGS_TABLE = "buildings";
         public static final String ID              = "id";
