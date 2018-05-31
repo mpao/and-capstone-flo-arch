@@ -23,9 +23,15 @@ Capstone project for udacity android nanodegree, based on Opendata by [opendata.
 11. App uses an **app bar** and associated toolbars.
 12. App builds and deploys using the **installRelease Gradle task**.
 13. App is equipped with a **signing configuration**, and the **keystore** and passwords are included in the repository. Keystore is referred to by a relative path. 
-14. App stores data locally by implementing a **ContentProvider**
+
+<del>&nbsp;&nbsp;14. App stores data locally by implementing a **ContentProvider**</del>
+
+14. App stores data locally by implementing Room
 15. If it needs to pull or send data to/from a web service or API only once, or on a per request basis (such as a search application), app uses an **IntentService** to do so.
-16. App uses a **Loader** to move its data to its views(unless you are using Firebase).
+
+<del>&nbsp;&nbsp;16. App uses a **Loader** to move its data to its views(unless you are using Firebase).</del>
+
+16. If Room is used then **LiveData and ViewModel** are used when required and no **unnecessary calls** to the database are made.
 
 
 ### Documentations
