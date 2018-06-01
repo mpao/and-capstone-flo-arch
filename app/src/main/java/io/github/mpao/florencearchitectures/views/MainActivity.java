@@ -1,27 +1,24 @@
 package io.github.mpao.florencearchitectures.views;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+
+import java.util.Objects;
+
 import io.github.mpao.florencearchitectures.R;
 import io.github.mpao.florencearchitectures.models.networks.OpenDataService;
+import static android.app.FragmentManager.POP_BACK_STACK_INCLUSIVE;
 
 public class MainActivity extends AppCompatActivity {
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = item -> {
-                switch (item.getItemId()) {
-                    case R.id.navigation_home:
-                        return true;
-                    case R.id.navigation_map:
-                        return true;
-                    case R.id.navigation_favorite:
-                        return true;
-                }
-                return false;
-            };
+    private static final String FRAGMENT_NORMAL = "FRAGMENT_NORMAL";
+    private BottomNavigationView navigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,16 +26,72 @@ public class MainActivity extends AppCompatActivity {
         setTheme(R.style.AppTheme); // see splash_screen.xml
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setSupportActionBar(findViewById(R.id.toolbar));
+
+        viewFragment( new HomeFragment());
+
+        navigation = findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    viewFragment(new HomeFragment());
+                    return true;
+                case R.id.navigation_map:
+                    viewFragment(new MapFragment(), FRAGMENT_NORMAL);
+                    return true;
+                case R.id.navigation_favorite:
+                    viewFragment(new FavoriteFragment(), FRAGMENT_NORMAL);
+                    return true;
+            }
+            return false;
+        });
+
+        //todo manage data
+        Intent intent = new Intent(this, OpenDataService.class);
+        startService(intent);
+
+    }
+
+    /*
+     * Fragment management
+     * https://stackoverflow.com/a/44190200/1588252
+     * That answer is a one of mine, it's a my solution
+     */
+    private void viewFragment(Fragment fragment, String name){
 
         final FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.content, new HomeFragment()).commit();
+        fragmentTransaction.replace(R.id.content, fragment);
 
-        BottomNavigationView navigation = findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        if(name == null){
+            fragmentManager.popBackStack(FRAGMENT_NORMAL, POP_BACK_STACK_INCLUSIVE);
+            fragmentTransaction.commit();
+            return;
+        }
 
-        Intent intent = new Intent(this, OpenDataService.class);
-        startService(intent);
+        final int count = fragmentManager.getBackStackEntryCount();
+        if( name.equals( FRAGMENT_NORMAL) ) {
+            fragmentTransaction.addToBackStack(name);
+        }
+        fragmentTransaction.commit();
+
+        fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                if( fragmentManager.getBackStackEntryCount() <= count){
+                    fragmentManager.popBackStack(FRAGMENT_NORMAL, POP_BACK_STACK_INCLUSIVE);
+                    fragmentManager.removeOnBackStackChangedListener(this);
+                    navigation.getMenu().getItem(0).setChecked(true);
+                }
+            }
+        });
+
+    }
+
+    @SuppressWarnings("unused")
+    private void viewFragment(Fragment fragment){
+        // normal back navigation, exit on back press
+        viewFragment( fragment, null );
 
     }
 

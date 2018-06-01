@@ -37,6 +37,8 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
 
     }
 
+    //todo restore rv position on rotation
+
     @Override
     public CursorLoader onCreateLoader(int id, Bundle args) {
 
@@ -69,7 +71,7 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
 
     @Override
     public void onLoaderReset(Loader loader) {
-
+        list.setAdapter(null);
     }
 
 }
