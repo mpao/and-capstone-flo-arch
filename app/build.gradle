@@ -17,7 +17,7 @@ android {
         }
     }
 
-    dataBinding.enabled = true
+    dataBinding.enabled = false // not used atm
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -34,6 +34,7 @@ ext.supportlibs = "27.1.0"
 ext.retrofit    = "2.3.0"
 ext.aac         = "1.1.1"
 ext.dagger      = "2.14.1"
+ext.map         = "15.0.1"
 
 dependencies {
     implementation "com.android.support:appcompat-v7:$supportlibs"
@@ -50,4 +51,8 @@ dependencies {
     implementation "com.google.dagger:dagger:$dagger"
     annotationProcessor "com.google.dagger:dagger-compiler:$dagger"
     compileOnly "javax.annotation:jsr250-api:1.0"
+    // maps
+    implementation "com.google.android.gms:play-services-maps:$map"
+    implementation "com.google.android.gms:play-services-location:$map"
+
 }
