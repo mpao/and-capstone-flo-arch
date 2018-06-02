@@ -5,6 +5,7 @@ import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,7 +38,24 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
 
     }
 
-    //todo restore rv position on rotation
+    /* manage fragment's data. not necessary at the moment, the fragment state is
+    fully saved in the activity, recyclerview position included
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            Parcelable save = savedInstanceState.getParcelable(LIST_STATE);
+            list.getLayoutManager().onRestoreInstanceState(save);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle state) {
+        super.onSaveInstanceState(state);
+        Parcelable save = list.getLayoutManager().onSaveInstanceState();
+        state.putParcelable(LIST_STATE, save);
+    }
+    */
 
     @Override
     public CursorLoader onCreateLoader(int id, Bundle args) {

@@ -7,10 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
-import java.util.Objects;
-
 import io.github.mpao.florencearchitectures.R;
 import io.github.mpao.florencearchitectures.models.networks.OpenDataService;
 import static android.app.FragmentManager.POP_BACK_STACK_INCLUSIVE;
@@ -19,6 +15,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String FRAGMENT_NORMAL = "FRAGMENT_NORMAL";
     private BottomNavigationView navigation;
+    private Fragment fragment;
+    private static final String FRAGMENT_STATE = "fragment_save";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +26,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setSupportActionBar(findViewById(R.id.toolbar));
 
-        viewFragment( new HomeFragment());
+        // restore or create fragment
+        fragment = savedInstanceState == null ? new HomeFragment() : getFragmentManager().getFragment(savedInstanceState, FRAGMENT_STATE);
+        viewFragment( fragment );
 
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(item -> {
@@ -52,6 +52,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        getFragmentManager().putFragment(outState, FRAGMENT_STATE, fragment);
+    }
+
+
     /*
      * Fragment management
      * https://stackoverflow.com/a/44190200/1588252
@@ -59,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void viewFragment(Fragment fragment, String name){
 
+        this.fragment = fragment;
         final FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.content, fragment);
@@ -88,7 +96,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @SuppressWarnings("unused")
+    /*
+     * method overload for no named fragment
+     */
     private void viewFragment(Fragment fragment){
         // normal back navigation, exit on back press
         viewFragment( fragment, null );
