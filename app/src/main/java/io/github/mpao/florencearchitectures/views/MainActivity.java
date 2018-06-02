@@ -1,11 +1,11 @@
 package io.github.mpao.florencearchitectures.views;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import io.github.mpao.florencearchitectures.R;
 import io.github.mpao.florencearchitectures.models.networks.OpenDataService;
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(findViewById(R.id.toolbar));
 
         // restore or create fragment
-        fragment = savedInstanceState == null ? new HomeFragment() : getFragmentManager().getFragment(savedInstanceState, FRAGMENT_STATE);
+        fragment = savedInstanceState == null ? new HomeFragment() : getSupportFragmentManager().getFragment(savedInstanceState, FRAGMENT_STATE);
         viewFragment( fragment );
 
         navigation = findViewById(R.id.navigation);
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        getFragmentManager().putFragment(outState, FRAGMENT_STATE, fragment);
+        getSupportFragmentManager().putFragment(outState, FRAGMENT_STATE, fragment);
     }
 
 
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     private void viewFragment(Fragment fragment, String name){
 
         this.fragment = fragment;
-        final FragmentManager fragmentManager = getFragmentManager();
+        final FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.content, fragment);
 

@@ -1,13 +1,13 @@
 package io.github.mpao.florencearchitectures.views;
 
-import android.app.LoaderManager;
-import android.content.CursorLoader;
-import android.content.Loader;
+import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,6 +20,7 @@ import io.github.mpao.florencearchitectures.views.adapters.CategoriesAdapter;
 public class HomeFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private RecyclerView list;
+    private Activity activity;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -28,6 +29,7 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        this.activity = getActivity();
         getLoaderManager().initLoader(1, null, this);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         list = root.findViewById(R.id.list);
@@ -57,11 +59,12 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
     }
     */
 
+    @NonNull
     @Override
     public CursorLoader onCreateLoader(int id, Bundle args) {
 
         return new CursorLoader(
-                getActivity(),
+                activity,
                 AppContract.AppContractElement.CATEGORY_URI,
                 null,
                 null,
@@ -72,7 +75,7 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
     }
 
     @Override
-    public void onLoadFinished(Loader loader, Cursor cursor) {
+    public void onLoadFinished(@NonNull Loader loader, Cursor cursor) {
 
         /*
         while (cursor.moveToNext()){
@@ -88,7 +91,7 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
     }
 
     @Override
-    public void onLoaderReset(Loader loader) {
+    public void onLoaderReset(@NonNull Loader loader) {
         list.setAdapter(null);
     }
 
