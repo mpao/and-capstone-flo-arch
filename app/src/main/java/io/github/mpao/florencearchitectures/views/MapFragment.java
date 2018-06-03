@@ -63,8 +63,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, LoaderM
         mapView.onCreate(mapSave);
         mapView.getMapAsync(this);
 
-        // loader
-        getLoaderManager().initLoader(1, null, this);
+        // loader: forced for restore markers on rotation
+        getLoaderManager().initLoader(1, null, this).forceLoad();
 
         return root;
 
@@ -79,7 +79,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, LoaderM
             mapSave = new Bundle();
             state.putBundle(MAP_SAVE, mapSave);
         }
-        mapView.onSaveInstanceState(mapSave);
+        if(mapView != null) {
+            mapView.onSaveInstanceState(mapSave);
+        }
 
     }
 
