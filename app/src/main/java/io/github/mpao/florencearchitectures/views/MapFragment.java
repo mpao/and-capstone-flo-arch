@@ -2,11 +2,13 @@ package io.github.mpao.florencearchitectures.views;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
@@ -15,7 +17,7 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.ImageView;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -116,16 +118,25 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, LoaderM
 
             // prepare custom InfoWindow
             map.setInfoWindowAdapter(new MapInfoWindow(activity));
-            map.setOnInfoWindowClickListener(marker ->{
-                Toast.makeText(activity, marker.getTitle(), Toast.LENGTH_LONG).show();
-            });
-
             // put data into marker
             map.addMarker(new MarkerOptions()
                     .position(here)
                     .title(name)
                     .snippet(image)
             );
+            // set up click listener
+            map.setOnInfoWindowClickListener(marker ->{
+                View infoWindow = View.inflate(activity, R.layout.map_building_info, null); // get infoWindow's layout
+                ImageView preview    = infoWindow.findViewById(R.id.image);                      // get preview image
+                Intent intent   = new Intent(activity, BuildingActivity.class);                  // create intent
+                intent.putExtra(BuildingActivity.class.getName(), marker.getTitle());            // put building ID
+                intent.putExtra("main_image", marker.getSnippet());                        // put image usrl string
+                // todo Shared element between InfoWindow and activity ? Will it works ?
+                ActivityOptionsCompat options = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation(activity, preview, "main_image");
+                startActivity(intent, options.toBundle());
+                activity.startActivity(intent);
+            });
 
         }
         cursor.close();
