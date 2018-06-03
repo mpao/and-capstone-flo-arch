@@ -3,8 +3,10 @@
     <dimen name="small_margin">8dp</dimen>
     <dimen name="category_title_text_size">24sp</dimen>
     <dimen name="category_row_height">250dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
     <dimen name="fab_elevation">6dp</dimen>
     <dimen name="appbar_elevation">4dp</dimen>
     <dimen name="image_preview_width">170dp</dimen>
     <dimen name="image_preview_height">170dp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
 </resources>

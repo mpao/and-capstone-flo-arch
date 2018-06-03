@@ -4,10 +4,19 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <!-- shared element -->
+        <item name="android:windowContentTransitions">true</item>
     </style>
 
     <style name="AppTheme.Launcher">
         <item name="android:windowBackground">@drawable/splash_screen</item>
         <item name="colorPrimaryDark">@color/default_white</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="AppTheme.Detail" parent="AppTheme">
+        <item name="colorPrimaryDark">@android:color/transparent</item>
     </style>
 </resources>
