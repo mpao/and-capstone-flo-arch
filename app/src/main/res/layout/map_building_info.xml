@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:layout_margin="@dimen/small_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Building's name"/>
+
+    <!--
+    @see MapInfoWindow class
+    image.setContentDescription( marker.getTitle() );
+    title.setText( marker.getTitle() );
+    -->
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="@dimen/image_preview_width"
+        android:layout_height="@dimen/image_preview_height"
+        android:layout_margin="@dimen/small_margin"
+        android:layout_marginEnd="@dimen/small_margin"
+        android:layout_marginStart="@dimen/small_margin"
+        android:contentDescription="@string/contentDescription_placeholder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        tools:src="@mipmap/placeholder"/>
+
+    <!--
+    it's a trap :)! InfoWindow is entirelly clickable, this is a hint for the user
+    ( the big big red button ... )
+    -->
+    <Button
+        android:id="@+id/button"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/image_preview_action_button"
+        app:layout_constraintEnd_toEndOf="@+id/image"
+        app:layout_constraintTop_toBottomOf="@+id/image"/>
+
+</android.support.constraint.ConstraintLayout>

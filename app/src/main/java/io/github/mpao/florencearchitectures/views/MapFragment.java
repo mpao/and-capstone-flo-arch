@@ -15,6 +15,7 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -106,11 +107,26 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, LoaderM
     public void onLoadFinished(@NonNull Loader loader, Cursor cursor) {
 
         while (cursor.moveToNext()){
-            String name = cursor.getString(cursor.getColumnIndex(AppContract.AppContractElement.NAME));
-            double lat  = cursor.getDouble(cursor.getColumnIndex(AppContract.AppContractElement.LATITUDE));
-            double lon  = cursor.getDouble(cursor.getColumnIndex(AppContract.AppContractElement.LONGITUDE));
-            LatLng here = new LatLng(lat, lon);
-            map.addMarker(new MarkerOptions().position(here).title(name));
+            //get data
+            String name  = cursor.getString(cursor.getColumnIndex(AppContract.AppContractElement.NAME));
+            double lat   = cursor.getDouble(cursor.getColumnIndex(AppContract.AppContractElement.LATITUDE));
+            double lon   = cursor.getDouble(cursor.getColumnIndex(AppContract.AppContractElement.LONGITUDE));
+            String image = cursor.getString(cursor.getColumnIndex(AppContract.AppContractElement.MAIN_IMAGE));
+            LatLng here  = new LatLng(lat, lon);
+
+            // prepare custom InfoWindow
+            map.setInfoWindowAdapter(new MapInfoWindow(activity));
+            map.setOnInfoWindowClickListener(marker ->{
+                Toast.makeText(activity, marker.getTitle(), Toast.LENGTH_LONG).show();
+            });
+
+            // put data into marker
+            map.addMarker(new MarkerOptions()
+                    .position(here)
+                    .title(name)
+                    .snippet(image)
+            );
+
         }
         cursor.close();
 

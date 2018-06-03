@@ -4,4 +4,6 @@
     <string name="title_map">Map</string>
     <string name="title_favorites">Favorites</string>
     <string name="network_error">network error :|</string>
+    <string name="contentDescription_placeholder">overridden on runtime</string>
+    <string name="image_preview_action_button">more info</string>
 </resources>
