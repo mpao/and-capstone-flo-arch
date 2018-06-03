@@ -3,11 +3,15 @@ package io.github.mpao.florencearchitectures.views;
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +23,12 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 import io.github.mpao.florencearchitectures.R;
+import io.github.mpao.florencearchitectures.models.databases.AppContract;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback {
+public class MapFragment extends Fragment implements OnMapReadyCallback, LoaderManager.LoaderCallbacks<Cursor> {
 
     private MapView mapView;
     private GoogleMap map;
@@ -54,6 +60,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mapView.onCreate(mapSave);
         mapView.getMapAsync(this);
 
+        // loader
+        getLoaderManager().initLoader(1, null, this);
+
         return root;
 
     }
@@ -70,6 +79,48 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mapView.onSaveInstanceState(mapSave);
 
     }
+
+    //region Loader stuff
+    /*
+     * get all the buildings from CONTENT_URI
+     */
+    @NonNull
+    @Override
+    public CursorLoader onCreateLoader(int id, Bundle args) {
+
+        return new CursorLoader(
+                activity,
+                AppContract.AppContractElement.CONTENT_URI,
+                null,
+                null,
+                null,
+                null
+        );
+
+    }
+
+    /*
+     * draw marks on building's positions
+     */
+    @Override
+    public void onLoadFinished(@NonNull Loader loader, Cursor cursor) {
+
+        while (cursor.moveToNext()){
+            String name = cursor.getString(cursor.getColumnIndex(AppContract.AppContractElement.NAME));
+            double lat  = cursor.getDouble(cursor.getColumnIndex(AppContract.AppContractElement.LATITUDE));
+            double lon  = cursor.getDouble(cursor.getColumnIndex(AppContract.AppContractElement.LONGITUDE));
+            LatLng here = new LatLng(lat, lon);
+            map.addMarker(new MarkerOptions().position(here).title(name));
+        }
+        cursor.close();
+
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader loader) {
+
+    }
+    //endregion
 
     //region Map, Permission and Location
     @Override
