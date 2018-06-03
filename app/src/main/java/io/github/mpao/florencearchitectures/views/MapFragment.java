@@ -17,6 +17,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Task;
 import io.github.mpao.florencearchitectures.R;
@@ -28,9 +29,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private FusedLocationProviderClient clientPosition;
     private Activity activity;
     private static final int DEFAULT_ZOOM = 14;
+    private static final int RADIUS_POS = 1000;
     private static final String MAP_SAVE = "map_save";
     private static final int LOCATION_REQUEST_CODE = 42;
-    private static final LatLng DEFAULT_POS = new LatLng(43.7652256,11.2477555);
+    private static final LatLng DEFAULT_POS = new LatLng(43.766449,11.2471021); // S.Spirito square, Florence
 
     public MapFragment() {
         // Required empty public constructor
@@ -69,6 +71,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
+    //region Map, Permission and Location
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
@@ -103,6 +106,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
+    /*
+     * If user dont allow geoloc, use a default position
+     */
     private void setDefaultPosition() throws SecurityException{
 
         map.setMyLocationEnabled(false);
@@ -121,11 +127,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         Task<Location> locationResult = clientPosition.getLastLocation();
         locationResult.addOnCompleteListener(activity,  task -> {
             if (task.isSuccessful()) {
-                // Set the map's camera position to the current location of the device.
                 Location location = task.getResult();
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), DEFAULT_ZOOM));
+                LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(position, DEFAULT_ZOOM));
                 map.setMyLocationEnabled(true);
-                //todo where is my blu dot ?
+                map.addCircle(new CircleOptions()
+                        .center(position)
+                        .radius(RADIUS_POS)
+                        .strokeWidth(0)
+                        .fillColor(ContextCompat.getColor(activity, R.color.position_radius)));
+                // fixed: where is my blu dot ?
+                // in emulator the blue dot doesnt appear in the middle of the circle,
+                // on a real device instead, it works
             } else {
                 this.setDefaultPosition();
             }
@@ -133,6 +146,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
+    /*
+     * Callback of user permission question
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,@NonNull int[] grantResults) throws SecurityException {
 
@@ -147,6 +163,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
 
     }
+    //endregion
 
     //region MapView unused methods
     @Override
