@@ -9,14 +9,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import io.github.mpao.florencearchitectures.R;
 import io.github.mpao.florencearchitectures.models.networks.OpenDataService;
-import static android.app.FragmentManager.POP_BACK_STACK_INCLUSIVE;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String FRAGMENT_NORMAL = "FRAGMENT_NORMAL";
-    private BottomNavigationView navigation;
-    private Fragment fragment;
     private static final String FRAGMENT_STATE = "fragment_save";
+    private static final String HOME_TAG = "home";
+    private static final String MAP_TAG  = "map";
+    private static final String FAVS_TAG = "favs";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,22 +25,27 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setSupportActionBar(findViewById(R.id.toolbar));
 
-        // restore or create fragment
-        fragment = savedInstanceState == null ? new HomeFragment() : getSupportFragmentManager().getFragment(savedInstanceState, FRAGMENT_STATE);
-        viewFragment( fragment );
+        // restore or create default fragment
+        if(savedInstanceState == null){
+            manageFragment(HOME_TAG);
+        }else{
+            String tag = savedInstanceState.getString(FRAGMENT_STATE);
+            assert tag != null;
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            Fragment fragment = fragmentManager.findFragmentByTag(tag);
+            fragmentTransaction.attach(fragment);
+            fragmentTransaction.setPrimaryNavigationFragment(fragment);
+            fragmentTransaction.setReorderingAllowed(true);
+            fragmentTransaction.commitNowAllowingStateLoss();
+        }
 
-        navigation = findViewById(R.id.navigation);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    viewFragment(new HomeFragment());
-                    return true;
-                case R.id.navigation_map:
-                    viewFragment(new MapFragment(), FRAGMENT_NORMAL);
-                    return true;
-                case R.id.navigation_favorite:
-                    viewFragment(new FavoriteFragment(), FRAGMENT_NORMAL);
-                    return true;
+                case R.id.navigation_home: manageFragment(HOME_TAG); return true;
+                case R.id.navigation_map: manageFragment(MAP_TAG); return true;
+                case R.id.navigation_favorite: manageFragment(FAVS_TAG); return true;
             }
             return false;
         });
@@ -55,53 +59,37 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        getSupportFragmentManager().putFragment(outState, FRAGMENT_STATE, fragment);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        outState.putString(FRAGMENT_STATE, fragmentManager.getPrimaryNavigationFragment().getTag());
     }
-
 
     /*
      * Fragment management
-     * https://stackoverflow.com/a/44190200/1588252
-     * That answer is a one of mine, it's a my solution
      */
-    private void viewFragment(Fragment fragment, String name){
+    private void manageFragment(String tag){
 
-        this.fragment = fragment;
-        final FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.content, fragment);
-
-        if(name == null){
-            fragmentManager.popBackStack(FRAGMENT_NORMAL, POP_BACK_STACK_INCLUSIVE);
-            fragmentTransaction.commit();
-            return;
-        }
-
-        final int count = fragmentManager.getBackStackEntryCount();
-        if( name.equals( FRAGMENT_NORMAL) ) {
-            fragmentTransaction.addToBackStack(name);
-        }
-        fragmentTransaction.commit();
-
-        fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
-            @Override
-            public void onBackStackChanged() {
-                if( fragmentManager.getBackStackEntryCount() <= count){
-                    fragmentManager.popBackStack(FRAGMENT_NORMAL, POP_BACK_STACK_INCLUSIVE);
-                    fragmentManager.removeOnBackStackChangedListener(this);
-                    navigation.getMenu().getItem(0).setChecked(true);
-                }
+        Fragment fragment = fragmentManager.findFragmentByTag(tag);
+        if(fragment == null) {
+            switch (tag){
+                case HOME_TAG: fragment = new HomeFragment(); break;
+                case MAP_TAG : fragment = new MapFragment(); break;
+                case FAVS_TAG: fragment = new FavoriteFragment(); break;
             }
-        });
+            fragmentTransaction.add(R.id.content, fragment, tag);
+        }else{
+            fragmentTransaction.attach(fragment);
+        }
 
-    }
+        Fragment curFrag = fragmentManager.getPrimaryNavigationFragment();
+        if(curFrag != null) {
+            fragmentTransaction.detach(curFrag);
+        }
 
-    /*
-     * method overload for no named fragment
-     */
-    private void viewFragment(Fragment fragment){
-        // normal back navigation, exit on back press
-        viewFragment( fragment, null );
+        fragmentTransaction.setPrimaryNavigationFragment(fragment);
+        fragmentTransaction.setReorderingAllowed(true);
+        fragmentTransaction.commitNowAllowingStateLoss();
 
     }
 
