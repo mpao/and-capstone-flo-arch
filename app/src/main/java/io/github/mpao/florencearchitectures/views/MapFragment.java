@@ -133,11 +133,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, LoaderM
                 Intent intent   = new Intent(activity, BuildingActivity.class);                  // create intent
                 intent.putExtra(BuildingActivity.class.getName(), marker.getTitle());            // put building ID
                 intent.putExtra("main_image", marker.getSnippet());                        // put image usrl string
-                // todo Shared element between InfoWindow and activity ? Will it works ?
+                // todo QUESTION: Shared element between InfoWindow and activity. Will it works ? seems yes, but it's horrible :|
                 ActivityOptionsCompat options = ActivityOptionsCompat
                         .makeSceneTransitionAnimation(activity, preview, "main_image");
-                startActivity(intent, options.toBundle());
-                activity.startActivity(intent);
+                activity.startActivity(intent, options.toBundle());
             });
 
         }
@@ -162,10 +161,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, LoaderM
         map.getUiSettings().setMyLocationButtonEnabled(true);
         map.getUiSettings().setCompassEnabled(true);
         map.getUiSettings().setZoomGesturesEnabled(true);
-
-        //LatLng here = new LatLng(43.7652256, 11.2477555);
-        //map.addMarker(new MarkerOptions().position(here).title("Test me!"));
-        //map.moveCamera(CameraUpdateFactory.newLatLng(here));
 
     }
 
@@ -247,37 +242,39 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, LoaderM
 
     //region MapView unused methods
     @Override
-    public void onResume() {
-        super.onResume();
-        mapView.onResume();
+    public void onStart() {
+        super.onStart();
+        if(mapView != null) mapView.onStart();
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        mapView.onStart();
+    public void onResume() {
+        super.onResume();
+        if(mapView != null) mapView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(mapView != null) mapView.onPause();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mapView.onStop();
+        if(mapView != null) mapView.onStop();
     }
-    @Override
-    public void onPause() {
-        mapView.onPause();
-        super.onPause();
-    }
+
     @Override
     public void onDestroy() {
-        mapView.onDestroy();
         super.onDestroy();
+        if(mapView != null) mapView.onDestroy();
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        mapView.onLowMemory();
+        if(mapView != null) mapView.onLowMemory();
     }
     //endregion
 
