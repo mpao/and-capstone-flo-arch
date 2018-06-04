@@ -82,9 +82,9 @@ public class MainActivity extends AppCompatActivity {
             fragmentTransaction.attach(fragment);
         }
 
-        Fragment curFrag = fragmentManager.getPrimaryNavigationFragment();
-        if(curFrag != null) {
-            fragmentTransaction.detach(curFrag);
+        Fragment current = fragmentManager.getPrimaryNavigationFragment();
+        if(current != null) {
+            fragmentTransaction.detach(current);
         }
 
         fragmentTransaction.setPrimaryNavigationFragment(fragment);
