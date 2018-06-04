@@ -29,6 +29,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 import io.github.mpao.florencearchitectures.R;
+import io.github.mpao.florencearchitectures.entities.CommonTags;
 import io.github.mpao.florencearchitectures.models.databases.AppContract;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback, LoaderManager.LoaderCallbacks<Cursor> {
@@ -131,8 +132,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, LoaderM
                 View infoWindow = View.inflate(activity, R.layout.map_building_info, null); // get infoWindow's layout
                 ImageView preview    = infoWindow.findViewById(R.id.image);                      // get preview image
                 Intent intent   = new Intent(activity, BuildingActivity.class);                  // create intent
-                intent.putExtra(BuildingActivity.class.getName(), marker.getTitle());            // put building ID
-                intent.putExtra("main_image", marker.getSnippet());                        // put image usrl string
+                intent.putExtra(CommonTags.ID, marker.getTitle());                               // put building ID
+                intent.putExtra(CommonTags.TITLE, marker.getTitle());                            // put building title
+                intent.putExtra(CommonTags.IMAGE, marker.getSnippet());                          // put image usrl string
                 // todo QUESTION: Shared element between InfoWindow and activity. Will it works ? seems yes, but it's horrible :|
                 ActivityOptionsCompat options = ActivityOptionsCompat
                         .makeSceneTransitionAnimation(activity, preview, "main_image");
