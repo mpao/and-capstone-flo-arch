@@ -30,7 +30,7 @@ public class AppContentProvider extends ContentProvider {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(AppContract.AUTHORITY, AppContract.ALL_BUILDINGS, BUILDINGS);
         uriMatcher.addURI(AppContract.AUTHORITY, AppContract.CATEGORIES, CATEGORIES);
-        uriMatcher.addURI(AppContract.AUTHORITY, AppContract.ALL_BUILDINGS + "/#", ELEMENT);
+        uriMatcher.addURI(AppContract.AUTHORITY, AppContract.ALL_BUILDINGS + "/*", ELEMENT);
         return uriMatcher;
 
     }
@@ -91,8 +91,8 @@ public class AppContentProvider extends ContentProvider {
                         projection,
                         selection,
                         selectionArgs,
-                        null,
-                        "id="+uri.getPathSegments().get(1),
+                        AppContract.AppContractElement.NAME,
+                        AppContract.AppContractElement.NAME + "='" + uri.getPathSegments().get(1) + "'",
                         sortOrder);
                 break;
             case CATEGORIES:
