@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -86,13 +87,15 @@ public class AppContentProvider extends ContentProvider {
                 cursor = db.query(BUILDINGS_TABLE, projection, selection,selectionArgs,null,null,sortOrder);
                 break;
             case ELEMENT:
+                //fix apostrophe for query.
                 cursor = db.query(
                         BUILDINGS_TABLE,
                         projection,
                         selection,
                         selectionArgs,
                         AppContract.AppContractElement.NAME,
-                        AppContract.AppContractElement.NAME + "='" + uri.getPathSegments().get(1) + "'",
+                        AppContract.AppContractElement.NAME +
+                                "='" + uri.getPathSegments().get(1).replace("'","''") + "'",
                         sortOrder);
                 break;
             case CATEGORIES:
