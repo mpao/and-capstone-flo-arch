@@ -19,4 +19,32 @@
     <style name="AppTheme.Detail" parent="AppTheme">
         <item name="colorPrimaryDark">@android:color/transparent</item>
     </style>
+
+    <style name="BorderedView" parent="AppTheme.Detail">
+        <item name="android:background">@drawable/bordered_view</item>
+        <item name="android:padding">@dimen/small_margin</item>
+    </style>
+
+    <style name="BuildingTextView">
+        <item name="android:textSize">@dimen/building_default_text_size</item>
+        <item name="android:textIsSelectable">true</item>
+    </style>
+
+    <style name="BuildingTextViewWithBorder" parent="BorderedView">
+        <item name="android:textSize">@dimen/building_default_text_size</item>
+    </style>
+
+    <style name="BuildingLabelTextView">
+        <item name="android:background">@color/colorAccent</item>
+        <item name="android:padding">@dimen/micro_margin</item>
+        <item name="android:paddingEnd">@dimen/small_margin</item>
+        <item name="android:paddingStart">@dimen/small_margin</item>
+        <item name="android:textColor">@color/default_white</item>
+        <item name="android:textSize">@dimen/category_label_text_size</item>
+        <item name="android:layout_marginStart">@dimen/default_margin</item>
+        <item name="android:layout_marginTop">@dimen/micro_margin</item>
+    </style>
+
+
+
 </resources>

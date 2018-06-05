@@ -1,14 +1,273 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
+<android.support.constraint.ConstraintLayout
+    android:id="@+id/layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:padding="@dimen/default_margin"
     tools:context=".views.BuildingActivity"
     tools:showIn="@layout/activity_building">
 
+    <FrameLayout
+        android:id="@+id/images_wrapper"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            style="@style/BorderedView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/default_margin"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/images_preview"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginTop="@dimen/default_margin"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                android:orientation="horizontal"
+                tools:listitem="@layout/content_building_image_row"/>
+
+        </LinearLayout>
 
 
-</android.support.v4.widget.NestedScrollView>
+        <TextView
+            style="@style/BuildingLabelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_images"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/category_wrapper"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin"
+        app:layout_constraintEnd_toEndOf="@+id/images_wrapper"
+        app:layout_constraintStart_toStartOf="@+id/images_wrapper"
+        app:layout_constraintTop_toBottomOf="@+id/images_wrapper">
+
+        <LinearLayout
+            style="@style/BorderedView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/default_margin"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/building_category"
+                style="@style/BuildingTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/default_margin"
+                tools:text="Primo Novecento: il nuovo secolo e l'architettura tra le due guerre"/>
+        </LinearLayout>
+
+
+        <TextView
+            style="@style/BuildingLabelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_category"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/information_wrapper"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/category_wrapper">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/information"
+            style="@style/BorderedView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/default_margin">
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.25"/>
+
+            <TextView
+                android:id="@+id/label_name"
+                style="@style/BuildingTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                android:text="@string/label_name"
+                app:layout_constraintEnd_toStartOf="@+id/guideline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/building_name"
+                style="@style/BuildingTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/small_margin"
+                app:layout_constraintBaseline_toBaselineOf="@+id/label_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/guideline"
+                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."/>
+
+            <TextView
+                android:id="@+id/label_author"
+                style="@style/BuildingTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_margin"
+                android:text="@string/label_author"
+                app:layout_constraintEnd_toStartOf="@+id/guideline"
+                app:layout_constraintStart_toStartOf="@+id/label_name"
+                app:layout_constraintTop_toBottomOf="@+id/building_name"/>
+
+            <TextView
+                android:id="@+id/building_author"
+                style="@style/BuildingTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/small_margin"
+                app:layout_constraintBaseline_toBaselineOf="@+id/label_author"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/guideline"
+                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."/>
+
+            <TextView
+                android:id="@+id/label_year"
+                style="@style/BuildingTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_margin"
+                android:text="@string/label_year"
+                app:layout_constraintEnd_toStartOf="@+id/guideline"
+                app:layout_constraintStart_toStartOf="@+id/label_name"
+                app:layout_constraintTop_toBottomOf="@+id/building_author"/>
+
+            <TextView
+                android:id="@+id/building_year"
+                style="@style/BuildingTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/small_margin"
+                app:layout_constraintBaseline_toBaselineOf="@+id/label_year"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/guideline"
+                tools:text="1900"/>
+
+            <TextView
+                android:id="@+id/label_typology"
+                style="@style/BuildingTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_margin"
+                android:text="@string/label_typology"
+                app:layout_constraintEnd_toStartOf="@+id/guideline"
+                app:layout_constraintStart_toStartOf="@+id/label_name"
+                app:layout_constraintTop_toBottomOf="@+id/building_year"/>
+
+            <TextView
+                android:id="@+id/building_typology"
+                style="@style/BuildingTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/small_margin"
+                app:layout_constraintBaseline_toBaselineOf="@+id/label_typology"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/guideline"
+                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."/>
+
+            <TextView
+                android:id="@+id/label_address"
+                style="@style/BuildingTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_margin"
+                android:text="@string/label_address"
+                app:layout_constraintEnd_toStartOf="@+id/guideline"
+                app:layout_constraintStart_toStartOf="@+id/label_name"
+                app:layout_constraintTop_toBottomOf="@+id/building_typology"/>
+
+            <TextView
+                android:id="@+id/building_address"
+                style="@style/BuildingTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/small_margin"
+                app:layout_constraintBaseline_toBaselineOf="@+id/label_address"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/guideline"
+                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."/>
+
+        </android.support.constraint.ConstraintLayout>
+
+        <TextView
+            style="@style/BuildingLabelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_information"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/description_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/information_wrapper">
+
+        <LinearLayout
+            style="@style/BorderedView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/default_margin"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/building_description"
+                style="@style/BuildingTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."/>
+        </LinearLayout>
+
+        <TextView
+            style="@style/BuildingLabelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_description"/>
+
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/error_image"
+        android:contentDescription="@string/building_error"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        app:layout_constraintBottom_toBottomOf="@+id/information_wrapper"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_error_outline_black_48dp"/>
+
+</android.support.constraint.ConstraintLayout>

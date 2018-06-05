@@ -3,7 +3,23 @@
     <string name="title_home">Home</string>
     <string name="title_map">Map</string>
     <string name="title_favorites">Favorites</string>
-    <string name="network_error">network error :|</string>
     <string name="contentDescription_placeholder">overridden on runtime</string>
     <string name="image_preview_action_button">more info</string>
+
+    <!-- Error Messages -->
+    <string name="network_error">network error :|</string>
+    <string name="building_error">At the moment it\'s not possible to retrieve the building information</string>
+
+    <!-- Building detail activity -->
+    <string name="label_name">Name:</string>
+    <string name="label_author">Author:</string>
+    <string name="label_year">Year:</string>
+    <string name="label_typology">Typology:</string>
+    <string name="label_address">Address:</string>
+    <string name="label_category">Category</string>
+    <string name="label_information">General Information</string>
+    <string name="label_description">Description</string>
+    <string name="label_images">Images</string>
+    <string name="image_preview_description">This is a image preview</string>
+
 </resources>
