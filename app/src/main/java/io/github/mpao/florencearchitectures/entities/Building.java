@@ -1,6 +1,9 @@
 package io.github.mpao.florencearchitectures.entities;
 
 import android.database.Cursor;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
@@ -9,11 +12,11 @@ import java.util.List;
 import io.github.mpao.florencearchitectures.models.databases.AppContract;
 
 @SuppressWarnings("unused")
-public class Building {
+public class Building implements Parcelable{
 
     //region Fields
     private final static String URL_SEPARATOR = "#";
-    private class Attributes {
+    private class Attributes implements Parcelable{
 
         @SerializedName("Costruzione")
         @Expose
@@ -49,6 +52,56 @@ public class Building {
         @Expose
         private String province;
 
+        //region Attributes Parcel Methods
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(this.year);
+            dest.writeString(this.typology);
+            dest.writeString(this.id);
+            dest.writeString(this.period);
+            dest.writeString(this.author);
+            dest.writeString(this.description);
+            dest.writeString(this.project);
+            dest.writeString(this.municipality);
+            dest.writeString(this.address);
+            dest.writeString(this.name);
+            dest.writeString(this.province);
+        }
+
+        public Attributes() {
+        }
+
+        protected Attributes(Parcel in) {
+            this.year = in.readString();
+            this.typology = in.readString();
+            this.id = in.readString();
+            this.period = in.readString();
+            this.author = in.readString();
+            this.description = in.readString();
+            this.project = in.readString();
+            this.municipality = in.readString();
+            this.address = in.readString();
+            this.name = in.readString();
+            this.province = in.readString();
+        }
+
+        public final Creator<Attributes> CREATOR = new Creator<Attributes>() {
+            @Override
+            public Attributes createFromParcel(Parcel source) {
+                return new Attributes(source);
+            }
+
+            @Override
+            public Attributes[] newArray(int size) {
+                return new Attributes[size];
+            }
+        };
+        //endregion
     }
 
     @SerializedName("centroid")
@@ -181,4 +234,42 @@ public class Building {
         return Arrays.asList(array);
     }
     //endregion
+
+    //region Parcelable implementation method, via plugin
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeList(this.centroid);
+        dest.writeParcelable(this.attributes, flags);
+        dest.writeStringList(this.mainImageResized);
+        dest.writeStringList(this.imagesResized);
+        dest.writeByte(this.favorite ? (byte) 1 : (byte) 0);
+    }
+
+    protected Building(Parcel in) {
+        this.centroid = new ArrayList<Double>();
+        in.readList(this.centroid, Double.class.getClassLoader());
+        this.attributes = in.readParcelable(Attributes.class.getClassLoader());
+        this.mainImageResized = in.createStringArrayList();
+        this.imagesResized = in.createStringArrayList();
+        this.favorite = in.readByte() != 0;
+    }
+
+    public static final Creator<Building> CREATOR = new Creator<Building>() {
+        @Override
+        public Building createFromParcel(Parcel source) {
+            return new Building(source);
+        }
+
+        @Override
+        public Building[] newArray(int size) {
+            return new Building[size];
+        }
+    };
+    //endregion
+
 }
