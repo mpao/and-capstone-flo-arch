@@ -1,5 +1,6 @@
 package io.github.mpao.florencearchitectures.views.adapters;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -56,6 +57,14 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder
         private ViewHolder(View view){
             super(view);
             imageView = view.findViewById(R.id.preview);
+            imageView.setOnClickListener(preview -> {
+                View container = View.inflate(context, R.layout.content_building_image, null);
+                ImageView target = container.findViewById(R.id.image);
+                Picasso.get().load(list.get(getAdapterPosition())).into(target);
+                Dialog dialog = new Dialog(context,android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+                dialog.setContentView(container);
+                dialog.show();
+            });
         }
 
     }
