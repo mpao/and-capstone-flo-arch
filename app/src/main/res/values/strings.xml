@@ -5,6 +5,7 @@
     <string name="title_favorites">Favorites</string>
     <string name="contentDescription_placeholder">overridden on runtime</string>
     <string name="image_preview_action_button">more info</string>
+    <string name="image_content_description">this is an image of %s</string>
 
     <!-- Error Messages -->
     <string name="network_error">network error :|</string>

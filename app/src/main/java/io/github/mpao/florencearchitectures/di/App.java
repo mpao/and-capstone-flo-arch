@@ -13,6 +13,8 @@ public class App extends Application {
         graph = DaggerGraph.builder()
                 .contextModule( new ContextModule(this) )
                 .retrofitModule( new RetrofitModule() )
+                .databaseModule( new DatabaseModule(this) )
+                .buildingsRepositoryModule( new BuildingsRepositoryModule() )
                 .build();
 
     }

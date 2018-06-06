@@ -38,12 +38,6 @@
             android:exported="false">
         </service>
 
-        <provider
-            android:name=".models.databases.AppContentProvider"
-            android:authorities="io.github.mpao.florencearchitectures"
-            android:exported="false">
-        </provider>
-
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

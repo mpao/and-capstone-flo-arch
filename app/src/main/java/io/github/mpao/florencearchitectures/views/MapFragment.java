@@ -29,10 +29,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 import io.github.mpao.florencearchitectures.R;
-import io.github.mpao.florencearchitectures.entities.CommonTags;
-import io.github.mpao.florencearchitectures.models.databases.AppContract;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback, LoaderManager.LoaderCallbacks<Cursor> {
+public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private MapView mapView;
     private GoogleMap map;
@@ -64,8 +62,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, LoaderM
         mapView.onCreate(mapSave);
         mapView.getMapAsync(this);
 
-        // loader: forced for restore markers on rotation
-        getLoaderManager().initLoader(1, null, this).forceLoad();
 
         return root;
 
@@ -86,70 +82,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, LoaderM
 
     }
 
-    //region Loader stuff
-    /*
-     * get all the buildings from CONTENT_URI
-     */
-    @NonNull
-    @Override
-    public CursorLoader onCreateLoader(int id, Bundle args) {
 
-        return new CursorLoader(
-                activity,
-                AppContract.AppContractElement.CONTENT_URI,
-                null,
-                null,
-                null,
-                null
-        );
-
-    }
-
-    /*
-     * draw marks on building's positions
-     */
-    @Override
-    public void onLoadFinished(@NonNull Loader loader, Cursor cursor) {
-
-        while (cursor.moveToNext()){
-            //get data
-            String name  = cursor.getString(cursor.getColumnIndex(AppContract.AppContractElement.NAME));
-            double lat   = cursor.getDouble(cursor.getColumnIndex(AppContract.AppContractElement.LATITUDE));
-            double lon   = cursor.getDouble(cursor.getColumnIndex(AppContract.AppContractElement.LONGITUDE));
-            String image = cursor.getString(cursor.getColumnIndex(AppContract.AppContractElement.MAIN_IMAGE));
-            LatLng here  = new LatLng(lat, lon);
-
-            // prepare custom InfoWindow
-            map.setInfoWindowAdapter(new MapInfoWindow(activity));
-            // put data into marker
-            map.addMarker(new MarkerOptions()
-                    .position(here)
-                    .title(name)
-                    .snippet(image)
-            );
-            // set up click listener
-            map.setOnInfoWindowClickListener(marker ->{
-                View infoWindow = View.inflate(activity, R.layout.map_building_info, null); // get infoWindow's layout
-                ImageView preview    = infoWindow.findViewById(R.id.image);                      // get preview image
-                Intent intent   = new Intent(activity, BuildingActivity.class);                  // create intent
-                intent.putExtra(CommonTags.ID, marker.getTitle());                               // put building ID
-                intent.putExtra(CommonTags.TITLE, marker.getTitle());                            // put building title
-                intent.putExtra(CommonTags.IMAGE, marker.getSnippet());                          // put image usrl string
-                // todo QUESTION: Shared element between InfoWindow and activity. Will it works ? seems yes, but it's horrible :|
-                ActivityOptionsCompat options = ActivityOptionsCompat
-                        .makeSceneTransitionAnimation(activity, preview, "main_image");
-                activity.startActivity(intent, options.toBundle());
-            });
-
-        }
-        cursor.close();
-
-    }
-
-    @Override
-    public void onLoaderReset(@NonNull Loader loader) {
-
-    }
     //endregion
 
     //region Map, Permission and Location

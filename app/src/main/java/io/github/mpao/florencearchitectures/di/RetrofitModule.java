@@ -3,11 +3,12 @@ package io.github.mpao.florencearchitectures.di;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.IOException;
+import java.util.concurrent.Executors;
 import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import io.github.mpao.florencearchitectures.entities.Building;
-import io.github.mpao.florencearchitectures.entities.BuildingDeserializer;
+import io.github.mpao.florencearchitectures.models.networks.BuildingDeserializer;
 import io.github.mpao.florencearchitectures.models.networks.OpenDataApi;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
@@ -38,8 +39,10 @@ public class RetrofitModule {
                 .addInterceptor(new ResponseInterceptor())
                 .build();
 
+        // retrofit callbacks in another thread
         return new Retrofit.Builder()
                 .baseUrl(FLORENCE_OPENDATA)
+                .callbackExecutor(Executors.newSingleThreadExecutor())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(client)
                 .build();
