@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         Fragment fragment = fragmentManager.findFragmentByTag(tag);
         if(fragment == null) {
             switch (tag){
-                case HOME_TAG: fragment = new HomeFragment(); break;
+                case HOME_TAG: fragment = new CategoryFragment(); break;
                 case MAP_TAG : fragment = new MapFragment(); break;
                 case FAVS_TAG: fragment = new FavoriteFragment(); break;
             }

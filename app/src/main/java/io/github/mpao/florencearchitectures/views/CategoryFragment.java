@@ -17,12 +17,12 @@ import io.github.mpao.florencearchitectures.R;
 import io.github.mpao.florencearchitectures.models.databases.AppContract;
 import io.github.mpao.florencearchitectures.views.adapters.CategoriesAdapter;
 
-public class HomeFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class CategoryFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private RecyclerView list;
     private Activity activity;
 
-    public HomeFragment() {
+    public CategoryFragment() {
         // Required empty public constructor
     }
 
@@ -31,7 +31,7 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
 
         this.activity = getActivity();
         getLoaderManager().initLoader(1, null, this);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
+        View root = inflater.inflate(R.layout.fragment_category, container, false);
         list = root.findViewById(R.id.list);
         list.setHasFixedSize(true);
         RecyclerView.LayoutManager lm = new LinearLayoutManager(getActivity());
