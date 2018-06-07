@@ -22,7 +22,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
@@ -40,7 +39,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private Activity activity;
     BuildingsListViewModel viewModel;
     private static final int DEFAULT_ZOOM = 14;
-    private static final int RADIUS_POS = 1000;
     private static final int LOCATION_REQUEST_CODE = 42;
     private static final LatLng DEFAULT_POS = new LatLng(43.766449,11.2471021); // S.Spirito square, Florence
 
@@ -58,7 +56,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         clientPosition = LocationServices.getFusedLocationProviderClient(activity);
         mapView.onCreate(null);
         mapView.getMapAsync(this);
-        //todo map position on rotation
         // List fragment and Map fragment share the same data model, the complete list
         // of element: in this case I can pass the activity as LyfeCycleOwner to share
         // the same ViewModel and avoid database calls when I change between those two fragments
@@ -110,7 +107,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 this.putDataMarkersOnMap(list);
             }
         });
-
+        // if camera moved, save the new position inside the viewmodel
+        map.setOnCameraMoveListener(() -> viewModel.setPosition(map.getCameraPosition().target));
     }
 
     /*
@@ -136,7 +134,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private void setDefaultPosition() throws SecurityException{
 
         map.setMyLocationEnabled(false);
-        map.moveCamera(CameraUpdateFactory.newLatLng(DEFAULT_POS));
+        // if the viewmodel doesnt have any saved camera position, set camera to DEFAULT_POS
+        LatLng position = viewModel.getPosition()==null ? DEFAULT_POS : viewModel.getPosition();
+        map.moveCamera(CameraUpdateFactory.newLatLng(position));
         map.getUiSettings().setMyLocationButtonEnabled(false);
 
     }
@@ -152,14 +152,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         locationResult.addOnCompleteListener(activity,  task -> {
             if (task.isSuccessful()) {
                 Location location = task.getResult();
-                LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
+                // if the viewmodel doesnt have any saved camera position, set camera to user position
+                LatLng position = viewModel.getPosition()==null ?
+                        new LatLng(location.getLatitude(), location.getLongitude()) : viewModel.getPosition();
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(position, DEFAULT_ZOOM));
                 map.setMyLocationEnabled(true);
-                map.addCircle(new CircleOptions()
-                        .center(position)
-                        .radius(RADIUS_POS)
-                        .strokeWidth(0)
-                        .fillColor(ContextCompat.getColor(activity, R.color.position_radius)));
                 // fixed: where is my blu dot ?
                 // in emulator the blue dot doesnt appear in the middle of the circle,
                 // on a real device instead, it works
