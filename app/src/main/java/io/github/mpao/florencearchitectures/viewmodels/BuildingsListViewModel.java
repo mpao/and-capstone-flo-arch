@@ -15,11 +15,6 @@ public class BuildingsListViewModel extends ViewModel {
     public BuildingsListViewModel(){
 
         App.graph.inject(this);
-
-    }
-
-    public void init(){
-
         this.list = repo.getAll();
 
     }

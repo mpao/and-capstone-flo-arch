@@ -58,9 +58,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mapView.getMapAsync(this);
         //todo map position on rotation
         viewModel = ViewModelProviders.of(this).get(BuildingsListViewModel.class);
-        if(savedInstanceState == null ) {
-            viewModel.init();
-        }
         return root;
 
     }

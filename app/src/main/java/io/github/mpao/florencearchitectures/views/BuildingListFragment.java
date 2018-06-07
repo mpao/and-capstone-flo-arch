@@ -32,7 +32,7 @@ public class BuildingListFragment extends Fragment {
         RecyclerView.LayoutManager lm = new LinearLayoutManager(getActivity());
         binding.list.setLayoutManager(lm);
 
-        this.observe(savedInstanceState);
+        this.observe();
 
         return binding.getRoot();
 
@@ -42,12 +42,9 @@ public class BuildingListFragment extends Fragment {
      * ViewModel for the fragment. The access to the database is executed only if
      * there is not any saved instance state, that is on the first creation
      */
-    private void observe(Bundle savedInstanceState){
+    private void observe(){
 
         BuildingsListViewModel viewModel = ViewModelProviders.of(this).get(BuildingsListViewModel.class);
-        if(savedInstanceState == null ) {
-            viewModel.init();
-        }
         viewModel.getList().observe(this, list ->{
             if( list != null) {
                 BuildingsAdapter adapter = new BuildingsAdapter(getActivity(), Arrays.asList(list));
