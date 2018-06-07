@@ -116,7 +116,7 @@ public class Building implements Parcelable{
     }
 
     public String getAddress() {
-        return address;
+        return address +" "+ municipality + " (" + city.substring(0,2).toUpperCase() + ")";
     }
 
     @NonNull public String getName() {
