@@ -26,9 +26,7 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
-
 import java.util.Objects;
-
 import io.github.mpao.florencearchitectures.R;
 import io.github.mpao.florencearchitectures.di.App;
 import io.github.mpao.florencearchitectures.entities.Building;
@@ -81,13 +79,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     .position(here)
                     .title(building.getName())
                     .snippet(building.getMainImage())
-            );
+            ).setTag(building);
             // set up click listener
             map.setOnInfoWindowClickListener(marker ->{
                 View infoWindow   = View.inflate(activity, R.layout.map_building_info, null);   // get infoWindow's layout
                 ImageView preview = infoWindow.findViewById(R.id.image);                             // get preview image
                 Intent intent     = new Intent(activity, BuildingActivity.class);                    // create intent
-                intent.putExtra(App.INTENT_BUILDING, building);
+                intent.putExtra(App.INTENT_BUILDING, (Building)marker.getTag());
                 // todo QUESTION: Shared element between InfoWindow and activity. Will it works ? seems yes, but it's horrible :|
                 ActivityOptionsCompat options = ActivityOptionsCompat
                         .makeSceneTransitionAnimation(activity, preview, "main_image");
