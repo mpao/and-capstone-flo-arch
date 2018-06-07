@@ -5,12 +5,15 @@ import android.databinding.DataBindingUtil;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import java.util.Arrays;
+import java.util.Objects;
+
 import io.github.mpao.florencearchitectures.R;
 import io.github.mpao.florencearchitectures.databinding.FragmentListBinding;
 import io.github.mpao.florencearchitectures.viewmodels.BuildingsListViewModel;
@@ -43,8 +46,12 @@ public class BuildingListFragment extends Fragment {
      * there is not any saved instance state, that is on the first creation
      */
     private void observe(){
-
-        BuildingsListViewModel viewModel = ViewModelProviders.of(this).get(BuildingsListViewModel.class);
+        // List fragment and Map fragment share the same data model, the complete list
+        // of element: in this case I can pass the activity as LyfeCycleOwner to share
+        // the same ViewModel and avoid database calls when I change between those two fragments
+        // https://developer.android.com/topic/libraries/architecture/viewmodel#sharing
+        FragmentActivity activity = Objects.requireNonNull(getActivity());
+        BuildingsListViewModel viewModel = ViewModelProviders.of(activity).get(BuildingsListViewModel.class);
         viewModel.getList().observe(this, list ->{
             if( list != null) {
                 BuildingsAdapter adapter = new BuildingsAdapter(getActivity(), Arrays.asList(list));

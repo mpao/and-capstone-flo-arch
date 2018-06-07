@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,9 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
+
+import java.util.Objects;
+
 import io.github.mpao.florencearchitectures.R;
 import io.github.mpao.florencearchitectures.di.App;
 import io.github.mpao.florencearchitectures.entities.Building;
@@ -57,7 +61,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mapView.onCreate(null);
         mapView.getMapAsync(this);
         //todo map position on rotation
-        viewModel = ViewModelProviders.of(this).get(BuildingsListViewModel.class);
+        // List fragment and Map fragment share the same data model, the complete list
+        // of element: in this case I can pass the activity as LyfeCycleOwner to share
+        // the same ViewModel and avoid database calls when I change between those two fragments
+        // https://developer.android.com/topic/libraries/architecture/viewmodel#sharing
+        FragmentActivity activity = Objects.requireNonNull(getActivity());
+        viewModel = ViewModelProviders.of(activity).get(BuildingsListViewModel.class);
         return root;
 
     }
