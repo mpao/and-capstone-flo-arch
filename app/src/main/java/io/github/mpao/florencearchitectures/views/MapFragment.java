@@ -2,18 +2,15 @@ package io.github.mpao.florencearchitectures.views;
 
 import android.Manifest;
 import android.app.Activity;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +26,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 import io.github.mpao.florencearchitectures.R;
+import io.github.mpao.florencearchitectures.di.App;
+import io.github.mpao.florencearchitectures.entities.Building;
+import io.github.mpao.florencearchitectures.viewmodels.BuildingsListViewModel;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
@@ -36,9 +36,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap map;
     private FusedLocationProviderClient clientPosition;
     private Activity activity;
+    BuildingsListViewModel viewModel;
     private static final int DEFAULT_ZOOM = 14;
     private static final int RADIUS_POS = 1000;
-    private static final String MAP_SAVE = "map_save";
     private static final int LOCATION_REQUEST_CODE = 42;
     private static final LatLng DEFAULT_POS = new LatLng(43.766449,11.2471021); // S.Spirito square, Florence
 
@@ -54,36 +54,41 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // MapView stuff
         mapView = root.findViewById(R.id.mapView);
         clientPosition = LocationServices.getFusedLocationProviderClient(activity);
-
-        Bundle mapSave = null;
-        if(savedInstanceState != null){
-            mapSave = savedInstanceState.getBundle(MAP_SAVE);
-        }
-        mapView.onCreate(mapSave);
+        mapView.onCreate(null);
         mapView.getMapAsync(this);
-
-
+        //todo map position on rotation
+        viewModel = ViewModelProviders.of(this).get(BuildingsListViewModel.class);
+        if(savedInstanceState == null ) {
+            viewModel.init();
+        }
         return root;
 
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle state) {
-
-        super.onSaveInstanceState(state);
-        Bundle mapSave = state.getBundle(MAP_SAVE);
-        if (mapSave == null) {
-            mapSave = new Bundle();
-            state.putBundle(MAP_SAVE, mapSave);
+    private void putDataMarkersOnMap(Building[] buildings){
+        // prepare custom InfoWindow
+        map.setInfoWindowAdapter(new MapInfoWindow(activity));
+        for (Building building : buildings) {
+            // put data into marker
+            LatLng here  = new LatLng(building.getLatitude(), building.getLongitude());
+            map.addMarker(new MarkerOptions()
+                    .position(here)
+                    .title(building.getName())
+                    .snippet(building.getMainImage())
+            );
+            // set up click listener
+            map.setOnInfoWindowClickListener(marker ->{
+                View infoWindow   = View.inflate(activity, R.layout.map_building_info, null);   // get infoWindow's layout
+                ImageView preview = infoWindow.findViewById(R.id.image);                             // get preview image
+                Intent intent     = new Intent(activity, BuildingActivity.class);                    // create intent
+                intent.putExtra(App.INTENT_BUILDING, building);
+                // todo QUESTION: Shared element between InfoWindow and activity. Will it works ? seems yes, but it's horrible :|
+                ActivityOptionsCompat options = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation(activity, preview, "main_image");
+                activity.startActivity(intent, options.toBundle());
+            });
         }
-        if(mapView != null) {
-            mapView.onSaveInstanceState(mapSave);
-        }
-
     }
-
-
-    //endregion
 
     //region Map, Permission and Location
     @Override
@@ -96,6 +101,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         map.getUiSettings().setMyLocationButtonEnabled(true);
         map.getUiSettings().setCompassEnabled(true);
         map.getUiSettings().setZoomGesturesEnabled(true);
+        viewModel.getList().observe(this, list ->{
+            if( list != null) {
+                this.putDataMarkersOnMap(list);
+            }
+        });
 
     }
 

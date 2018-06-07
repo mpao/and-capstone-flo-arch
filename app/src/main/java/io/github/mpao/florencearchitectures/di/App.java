@@ -5,6 +5,7 @@ import android.app.Application;
 public class App extends Application {
 
     public static Graph graph;
+    public static final String INTENT_BUILDING = "parcelable building intent tag";
 
     @Override
     public void onCreate(){
