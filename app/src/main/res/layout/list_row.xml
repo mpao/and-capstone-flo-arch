@@ -32,6 +32,7 @@
             android:textColor="@color/default_white"
             android:textSize="@dimen/category_title_text_size"
             android:text="@{building.getName()}"
+            android:transitionName="title_name"
             tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."/>
 
     </FrameLayout>

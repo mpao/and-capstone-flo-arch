@@ -50,7 +50,7 @@ public class BuildingListFragment extends Fragment {
         }
         viewModel.getList().observe(this, list ->{
             if( list != null) {
-                BuildingsAdapter adapter = new BuildingsAdapter(Arrays.asList(list));
+                BuildingsAdapter adapter = new BuildingsAdapter(getActivity(), Arrays.asList(list));
                 binding.list.setAdapter(adapter);
             }
         });
