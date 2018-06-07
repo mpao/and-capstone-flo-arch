@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="building"
+            type="io.github.mpao.florencearchitectures.entities.Building"/>
+    </data>
 <android.support.constraint.ConstraintLayout
     android:id="@+id/layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -14,6 +21,7 @@
         android:id="@+id/images_wrapper"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:visibility="@{building == null ? View.INVISIBLE : View.VISIBLE}"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -50,6 +58,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/default_margin"
+        android:visibility="@{building == null ? View.INVISIBLE : View.VISIBLE}"
         app:layout_constraintEnd_toEndOf="@+id/images_wrapper"
         app:layout_constraintStart_toStartOf="@+id/images_wrapper"
         app:layout_constraintTop_toBottomOf="@+id/images_wrapper">
@@ -67,6 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/default_margin"
+                android:text="@{building.getCategory()}"
                 tools:text="Primo Novecento: il nuovo secolo e l'architettura tra le due guerre"/>
         </LinearLayout>
 
@@ -84,6 +94,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/default_margin"
+        android:visibility="@{building == null ? View.INVISIBLE : View.VISIBLE}"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/category_wrapper">
@@ -122,6 +133,7 @@
                 app:layout_constraintBaseline_toBaselineOf="@+id/label_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/guideline"
+                android:text="@{building.getName()}"
                 tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."/>
 
             <TextView
@@ -144,6 +156,7 @@
                 app:layout_constraintBaseline_toBaselineOf="@+id/label_author"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/guideline"
+                android:text="@{building.getAuthor()}"
                 tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."/>
 
             <TextView
@@ -166,6 +179,7 @@
                 app:layout_constraintBaseline_toBaselineOf="@+id/label_year"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/guideline"
+                android:text="@{building.getBuildYear()}"
                 tools:text="1900"/>
 
             <TextView
@@ -188,6 +202,7 @@
                 app:layout_constraintBaseline_toBaselineOf="@+id/label_typology"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/guideline"
+                android:text="@{building.getTypology()}"
                 tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."/>
 
             <TextView
@@ -210,6 +225,7 @@
                 app:layout_constraintBaseline_toBaselineOf="@+id/label_address"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/guideline"
+                android:text="@{building.getAddress()}"
                 tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."/>
 
         </android.support.constraint.ConstraintLayout>
@@ -227,6 +243,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/default_margin"
+        android:visibility="@{building == null ? View.INVISIBLE : View.VISIBLE}"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/information_wrapper">
@@ -243,6 +260,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/default_margin"
+                android:text="@{building.getDescription()}"
                 tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."/>
         </LinearLayout>
 
@@ -259,7 +277,7 @@
         android:contentDescription="@string/building_error"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="gone"
+        android:visibility="@{building == null ? View.VISIBLE : View.INVISIBLE}"
         android:layout_marginBottom="@dimen/default_margin"
         android:layout_marginEnd="@dimen/default_margin"
         android:layout_marginStart="@dimen/default_margin"
@@ -271,3 +289,4 @@
         app:srcCompat="@drawable/ic_error_outline_black_48dp"/>
 
 </android.support.constraint.ConstraintLayout>
+</layout>
