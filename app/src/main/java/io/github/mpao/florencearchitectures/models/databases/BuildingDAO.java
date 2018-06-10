@@ -24,4 +24,10 @@ public interface BuildingDAO {
     @Query("select count(*) from building")
     int countBuildings();
 
+    @Query("update building set favorite = 1 where name = :id")
+    void insertFavorite(String id);
+
+    @Query("update building set favorite = 0 where name = :id")
+    void deleteFavorite(String id);
+
 }

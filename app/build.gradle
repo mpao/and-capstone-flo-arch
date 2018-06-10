@@ -49,6 +49,7 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:$aac"
     implementation "android.arch.lifecycle:common-java8:$aac"
     //room
+    annotationProcessor "com.android.databinding:compiler:3.1.3" // bindable pojo fields
     implementation "android.arch.persistence.room:runtime:$room"
     annotationProcessor "android.arch.persistence.room:compiler:$room"
     // dagger

@@ -16,6 +16,7 @@ public class App extends Application {
                 .retrofitModule( new RetrofitModule() )
                 .databaseModule( new DatabaseModule(this) )
                 .buildingsRepositoryModule( new BuildingsRepositoryModule() )
+                .favoritesRepoModule( new FavoritesRepoModule() )
                 .build();
 
     }

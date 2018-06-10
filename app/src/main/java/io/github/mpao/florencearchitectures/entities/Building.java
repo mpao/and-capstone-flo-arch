@@ -3,6 +3,8 @@ package io.github.mpao.florencearchitectures.entities;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -13,7 +15,7 @@ import io.github.mpao.florencearchitectures.models.databases.DataConverter;
 
 @SuppressWarnings("unused")
 @Entity
-public class Building implements Parcelable{
+public class Building extends BaseObservable implements Parcelable{
 
     //region Fields
     @SerializedName("name")
@@ -64,6 +66,8 @@ public class Building implements Parcelable{
     @SerializedName("city")
     @Expose
     public String city;
+    @Bindable
+    private boolean favorite;
     //endregion
 
     //region Getters
@@ -125,6 +129,11 @@ public class Building implements Parcelable{
 
     public String getCity() {
         return city;
+    }
+
+    @Bindable
+    public boolean isFavorite() {
+        return favorite;
     }
     //endregion
 
@@ -192,6 +201,12 @@ public class Building implements Parcelable{
 
     public String getImageDescription(String string){
         return string + " " + this.name;
+    }
+
+    @Bindable
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+        //notifyPropertyChanged(BR.favorite);
     }
 
     //region Parcelable implementation method, via plugin
