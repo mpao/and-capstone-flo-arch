@@ -7,6 +7,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.app.TaskStackBuilder;
 import android.widget.RemoteViews;
 import java.util.concurrent.ThreadLocalRandom;
 import javax.inject.Inject;
@@ -49,7 +50,13 @@ public class RandomBuildingWidgetProvider extends AppWidgetProvider {
                     // intent and click listener
                     Intent intent = new Intent(context, BuildingActivity.class);
                     intent.putExtra(App.INTENT_BUILDING, building);
-                    PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+                    // pending intent from https://developer.android.com/training/implementing-navigation/temporal.html
+                    // The resulting PendingIntent specifies not only the activity to start,
+                    // but also the back and up stack that should be inserted into the task
+                    PendingIntent pendingIntent = TaskStackBuilder
+                                        .create(context)
+                                        .addNextIntentWithParentStack(intent)
+                                        .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
                     RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget);
                     views.setOnClickPendingIntent(R.id.layout, pendingIntent);
 
