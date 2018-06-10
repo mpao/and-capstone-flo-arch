@@ -24,6 +24,10 @@ public class OpenDataService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
+        //TODO: improve updates
+        // in this release there is not a swipe to refresh function and then
+        // forceUpdate is unused. To implement this feature, remember to change
+        // the sql structure to save favorites elsewhere
         boolean forceUpdate = intent.getBooleanExtra("force", false);
 
         api.get().enqueue(new Callback<Building[]>() {
