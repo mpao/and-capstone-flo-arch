@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Fragment current = fragmentManager.getPrimaryNavigationFragment();
-        if(current != null) {
+        if(current != null && current != fragment) {
             fragmentTransaction.detach(current);
         }
 
