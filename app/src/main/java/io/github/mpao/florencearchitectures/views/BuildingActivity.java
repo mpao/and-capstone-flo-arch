@@ -57,7 +57,7 @@ public class BuildingActivity extends AppCompatActivity {
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if(building != null) {
-            binding.toolbar.setTitle(building.getName());
+            getSupportActionBar().setTitle(building.getName());
             Picasso.get().load(building.getMainImage()).placeholder(R.mipmap.placeholder).into(binding.mainImage);
         }
 
