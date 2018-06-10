@@ -13,6 +13,9 @@ public interface BuildingDAO {
     @Query("SELECT * FROM building")
     LiveData<Building[]> getAll();
 
+    @Query("SELECT * FROM building")
+    Building[] getAllForWidget();
+
     @Insert(onConflict = REPLACE)
     void insertAll(Building... buildings);
 

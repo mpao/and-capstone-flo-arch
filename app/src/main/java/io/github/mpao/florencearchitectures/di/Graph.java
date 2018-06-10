@@ -7,6 +7,7 @@ import io.github.mpao.florencearchitectures.models.repositories.BuildingsReposit
 import io.github.mpao.florencearchitectures.models.repositories.FavoritesRepoImpl;
 import io.github.mpao.florencearchitectures.viewmodels.BuildingsListViewModel;
 import io.github.mpao.florencearchitectures.viewmodels.DetailViewModel;
+import io.github.mpao.florencearchitectures.views.widgets.RandomBuildingWidgetProvider;
 
 @Singleton
 @Component(modules = {
@@ -23,4 +24,5 @@ public interface Graph {
     void inject(BuildingsRepositoryImpl buildingsRepository);
     void inject(DetailViewModel detailViewModel);
     void inject(FavoritesRepoImpl favoritesRepo);
+    void inject(RandomBuildingWidgetProvider randomBuildingWidgetProvider);
 }
