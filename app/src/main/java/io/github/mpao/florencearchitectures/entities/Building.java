@@ -66,9 +66,11 @@ public class Building extends BaseObservable implements Parcelable{
     @SerializedName("city")
     @Expose
     public String city;
-    @Bindable
     private boolean favorite;
     //endregion
+
+    public Building() {
+    }
 
     //region Getters
     public Double getLatitude() {
@@ -131,7 +133,6 @@ public class Building extends BaseObservable implements Parcelable{
         return city;
     }
 
-    @Bindable
     public boolean isFavorite() {
         return favorite;
     }
@@ -203,11 +204,10 @@ public class Building extends BaseObservable implements Parcelable{
         return string + " " + this.name;
     }
 
-    @Bindable
     public void setFavorite(boolean favorite) {
         this.favorite = favorite;
-        //notifyPropertyChanged(BR.favorite);
     }
+    //endregion
 
     //region Parcelable implementation method, via plugin
     @Override
@@ -217,6 +217,8 @@ public class Building extends BaseObservable implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.name);
+        dest.writeString(this.id);
         dest.writeValue(this.latitude);
         dest.writeValue(this.longitude);
         dest.writeString(this.mainImage);
@@ -224,20 +226,18 @@ public class Building extends BaseObservable implements Parcelable{
         dest.writeString(this.buildYear);
         dest.writeString(this.typology);
         dest.writeString(this.category);
-        dest.writeString(this.id);
         dest.writeString(this.author);
         dest.writeString(this.description);
         dest.writeString(this.projectYear);
         dest.writeString(this.municipality);
         dest.writeString(this.address);
-        dest.writeString(this.name);
         dest.writeString(this.city);
-    }
-
-    public Building() {
+        dest.writeByte(this.favorite ? (byte) 1 : (byte) 0);
     }
 
     protected Building(Parcel in) {
+        this.name = in.readString();
+        this.id = in.readString();
         this.latitude = (Double) in.readValue(Double.class.getClassLoader());
         this.longitude = (Double) in.readValue(Double.class.getClassLoader());
         this.mainImage = in.readString();
@@ -245,14 +245,13 @@ public class Building extends BaseObservable implements Parcelable{
         this.buildYear = in.readString();
         this.typology = in.readString();
         this.category = in.readString();
-        this.id = in.readString();
         this.author = in.readString();
         this.description = in.readString();
         this.projectYear = in.readString();
         this.municipality = in.readString();
         this.address = in.readString();
-        this.name = in.readString();
         this.city = in.readString();
+        this.favorite = in.readByte() != 0;
     }
 
     public static final Creator<Building> CREATOR = new Creator<Building>() {
@@ -266,6 +265,4 @@ public class Building extends BaseObservable implements Parcelable{
             return new Building[size];
         }
     };
-    //endregion
-
 }
