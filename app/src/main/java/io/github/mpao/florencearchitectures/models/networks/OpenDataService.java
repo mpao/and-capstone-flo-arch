@@ -2,8 +2,9 @@ package io.github.mpao.florencearchitectures.models.networks;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.util.Log;
 import javax.inject.Inject;
+
+import io.github.mpao.florencearchitectures.R;
 import io.github.mpao.florencearchitectures.di.App;
 import io.github.mpao.florencearchitectures.entities.Building;
 import io.github.mpao.florencearchitectures.models.databases.AppDatabase;
@@ -46,8 +47,9 @@ public class OpenDataService extends IntentService {
             }
             @Override
             public void onFailure(Call<Building[]> call, Throwable t) {
-                Log.d(OpenDataService.class.toString(), "oh no");
-                //todo fix error message
+                Intent intent = new Intent("io.github.mpao.florencearchitectures");
+                intent.putExtra(App.INTENT_ERROR, getString(R.string.network_error));
+                sendBroadcast(intent);
             }
 
         });

@@ -1,13 +1,19 @@
 package io.github.mpao.florencearchitectures.views;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import io.github.mpao.florencearchitectures.R;
+import io.github.mpao.florencearchitectures.di.App;
 import io.github.mpao.florencearchitectures.models.networks.OpenDataService;
 
 public class MainActivity extends AppCompatActivity {
@@ -16,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String HOME_TAG = "home";
     private static final String MAP_TAG  = "map";
     private static final String FAVS_TAG = "favs";
+    private Receiver receiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setSupportActionBar(findViewById(R.id.toolbar));
+        receiver = new Receiver();
 
         // restore or create default fragment
         if(savedInstanceState == null){
@@ -50,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
 
-        //todo manage data
         Intent intent = new Intent(this, OpenDataService.class);
         startService(intent);
 
@@ -61,6 +68,26 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         FragmentManager fragmentManager = getSupportFragmentManager();
         outState.putString(FRAGMENT_STATE, fragmentManager.getPrimaryNavigationFragment().getTag());
+    }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+        registerReceiver(receiver, new IntentFilter("io.github.mpao.florencearchitectures"));
+
+    }
+
+    @Override
+    public void onPause() {
+
+        super.onPause();
+        try {
+            unregisterReceiver(receiver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     /*
@@ -90,6 +117,19 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.setPrimaryNavigationFragment(fragment);
         fragmentTransaction.setReorderingAllowed(true);
         fragmentTransaction.commitNowAllowingStateLoss();
+
+    }
+
+    private class Receiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            String error = intent.getStringExtra(App.INTENT_ERROR);
+            View view = findViewById(R.id.toolbar);
+            Snackbar.make(view, error, Snackbar.LENGTH_LONG).show();
+
+        }
 
     }
 

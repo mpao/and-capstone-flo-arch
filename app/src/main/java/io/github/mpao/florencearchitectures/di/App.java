@@ -6,6 +6,7 @@ public class App extends Application {
 
     public static Graph graph;
     public static final String INTENT_BUILDING = "parcelable building intent tag";
+    public static final String INTENT_ERROR    = "service error, no netwotk ?";
 
     @Override
     public void onCreate(){
