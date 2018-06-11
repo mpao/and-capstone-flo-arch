@@ -25,4 +25,8 @@
 
     <!-- Widget -->
     <string name="image_widget_description">random building selected: tap for more info</string>
+
+    <!-- ADS -->
+    <string name="ads_key">ca-app-pub-3940256099942544/6300978111</string>
+
 </resources>

@@ -12,6 +12,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
 import io.github.mpao.florencearchitectures.R;
 import io.github.mpao.florencearchitectures.di.App;
 import io.github.mpao.florencearchitectures.models.networks.OpenDataService;
@@ -31,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setSupportActionBar(findViewById(R.id.toolbar));
+        setAds();
         receiver = new Receiver();
 
         // restore or create default fragment
@@ -117,6 +123,15 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.setPrimaryNavigationFragment(fragment);
         fragmentTransaction.setReorderingAllowed(true);
         fragmentTransaction.commitNowAllowingStateLoss();
+
+    }
+
+    private void setAds(){
+
+        MobileAds.initialize(this, getString(R.string.ads_key));
+        AdView ads = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        ads.loadAd(adRequest);
 
     }
 
