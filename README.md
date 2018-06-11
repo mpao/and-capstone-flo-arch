@@ -20,10 +20,15 @@ Capstone project for udacity android nanodegree, based on Opendata by [opendata.
 ### Installation
 ```bash
 $ ./gradlew installRelease
+```
 
-For testing purposes use this coordinates in the emulator
-latitude  : 43.7664490
-longitude : 11.2471021
+For testing purposes use this coordinates in the emulator<br/>
+latitude  : **43.7664490**<br/>
+longitude : **11.2471021**<br/>
+Put a valid Google Maps key in `strings.xml`
+
+```html
+<string name="google_maps_key">[HERE]</string>
 ```
 
 ### Constraints
