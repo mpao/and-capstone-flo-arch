@@ -23,4 +23,6 @@
     <string name="label_images">Images</string>
     <string name="image_preview_description">This is a image preview</string>
 
+    <!-- Widget -->
+    <string name="image_widget_description">random building selected: tap for more info</string>
 </resources>

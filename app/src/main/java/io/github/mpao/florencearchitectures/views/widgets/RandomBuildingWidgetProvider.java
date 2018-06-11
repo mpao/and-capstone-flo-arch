@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.app.TaskStackBuilder;
 import android.widget.RemoteViews;
+import com.squareup.picasso.Picasso;
 import java.util.concurrent.ThreadLocalRandom;
 import javax.inject.Inject;
 import io.github.mpao.florencearchitectures.R;
@@ -62,6 +63,10 @@ public class RandomBuildingWidgetProvider extends AppWidgetProvider {
 
 
                     views.setTextViewText(R.id.title, building.getName());
+                    views.setTextViewText(R.id.description, building.getDescription());
+                    Picasso.get()
+                            .load( building.getMainImage() )
+                            .into( views, R.id.image, new int[] {appWidgetId} );
                     appWidgetManager.updateAppWidget(appWidgetId, views);
                 }
 
