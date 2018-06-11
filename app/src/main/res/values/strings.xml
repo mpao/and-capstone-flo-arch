@@ -26,7 +26,7 @@
     <!-- Widget -->
     <string name="image_widget_description">random building selected: tap for more info</string>
 
-    <!-- ADS -->
-    <string name="ads_key">ca-app-pub-3940256099942544/6300978111</string>
-
+    <!-- Services KEYS -->
+    <string name="ads_key" translatable="false">ca-app-pub-3940256099942544/6300978111</string><!-- testing key -->
+    <string name="google_maps_key" translatable="false">[HERE]</string>
 </resources>
