@@ -8,6 +8,24 @@ Capstone project for udacity android nanodegree, based on Opendata by [opendata.
 >
 > [source](http://opendata.comune.fi.it/cultura_turismo/dataset_0363.html)
 
+### Preview
+<table>
+<tr>
+<td><img src='docs/01.png'/></td>
+<td><img src='docs/02.png'/></td>
+<td><img src='docs/03.png'/></td>
+</tr>
+</table>
+
+### Installation
+```bash
+$ ./gradlew installRelease
+
+For testing purposes use this coordinates in the emulator
+latitude  : 43.7664490
+longitude : 11.2471021
+```
+
 ### Constraints
 
 >*Update 31.5.2018* Room is allowed, right after 
